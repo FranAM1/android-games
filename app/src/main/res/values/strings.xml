@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidGames</string>
+    <string name="button_2048">Jugar al 2048</string>
+    <string name="button_otrojuego">Otro juego</string>
 </resources>
