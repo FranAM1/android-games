@@ -16,6 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textSize="32dp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         />
 
@@ -32,16 +33,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_2048"
+            android:textColor="@color/backgroundBrown"
             android:layout_gravity="center"
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/buttonBrown"
             />
 
         <Button
-            android:id="@+id/btnStartGame2"
+            android:id="@+id/btnStartSenku"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_senku"
+            android:textColor="@color/backgroundBrown"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:backgroundTint="@color/buttonBrown"

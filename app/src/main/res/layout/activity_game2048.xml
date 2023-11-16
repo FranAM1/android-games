@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Game2048"
-    android:padding="16dp"
     android:background="@color/backgroundBrown"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Game2048">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:text="@string/title_2048"
         android:textColor="@color/titleBrown"
         android:textSize="64dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.141"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -28,6 +33,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -54,6 +60,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -66,30 +73,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:text="0"
             android:textColor="@color/backgroundBrown"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="15dp"
         android:backgroundTint="@color/buttonBrown"
         android:text="@string/newGame"
+        android:textColor="@color/backgroundBrown"
         android:textSize="24dp"
         app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <GridLayout
         android:id="@+id/gridLayout2048"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@drawable/rounded_border_score2048"
         android:columnCount="4"
-        android:rowCount="4"
         android:padding="10dp"
+        android:rowCount="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,98 +107,82 @@
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
         <TextView
             style="@style/gridCells"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            />
+            android:layout_columnWeight="1" />
 
     </GridLayout>
 
@@ -197,11 +190,12 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/buttonBrown"
+        android:text="@string/back"
+        android:textColor="@color/backgroundBrown"
+        android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="@color/buttonBrown"
-        android:textSize="24dp"
-        android:text="@string/back"
-        android:textColor="@color/backgroundBrown"/>
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout2048" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
