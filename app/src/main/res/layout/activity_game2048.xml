@@ -46,16 +46,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
-        android:backgroundTint="@color/buttonBrown"
-        android:text="@string/newGame"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="75dp"
@@ -82,9 +72,19 @@
             android:textSize="24dp" />
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:backgroundTint="@color/buttonBrown"
+        android:text="@string/newGame"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <GridLayout
         android:id="@+id/gridLayout2048"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="350dp"
         android:background="@drawable/rounded_border_score2048"
         android:columnCount="4"

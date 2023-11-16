@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/backgroundBrown">
 
     <TextView
         android:id="@+id/tittleApp"
@@ -30,18 +31,20 @@
             android:id="@+id/btnStartGame2048"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_2048"
+            android:text="@string/title_2048"
             android:layout_gravity="center"
             android:layout_marginRight="8dp"
+            android:backgroundTint="@color/buttonBrown"
             />
 
         <Button
             android:id="@+id/btnStartGame2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_otrojuego"
+            android:text="@string/title_senku"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
+            android:backgroundTint="@color/buttonBrown"
             />
 
     </LinearLayout>
