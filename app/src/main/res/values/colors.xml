@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gridBrown">#BBADA0</color>
+    <color name="titleBrown">#776E65</color>
+    <color name="buttonBrown">#8F7A66</color>
+    <color name="cellBrown">#CDC1B4</color>
+    <color name="backgroundBrown">#FAF8EF</color>
 </resources>
