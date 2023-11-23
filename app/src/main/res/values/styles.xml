@@ -8,12 +8,17 @@
         <item name="android:background">@drawable/rounded_border_cell2048</item>
     </style>
 
-    <style name="pieceStyle">
+    <style name="voidPieceStyle">
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/piece_senku</item>
+        <item name="android:background">@drawable/void_senku_piece</item>
     </style>
 
     <style name="invisiblePiece">
         <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="pieceStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/piece_senku</item>
     </style>
 </resources>
