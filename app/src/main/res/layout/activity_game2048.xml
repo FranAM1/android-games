@@ -98,7 +98,7 @@
         android:background="@drawable/rounded_border_score2048"
         android:columnCount="4"
         android:rowCount="4"
-        android:padding="5dp"
+        android:padding="2dp"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

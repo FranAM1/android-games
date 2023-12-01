@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -13,9 +16,14 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 public class Game2048 extends AppCompatActivity {
+
+    private GestureDetector gestureDetector;
     double percentage2 = 0.6;
 
     int[][] board = new int[4][4];
+
+    private GridLayout gridLayout;
+    private int rows, columns;
 
 
     @Override
@@ -23,14 +31,14 @@ public class Game2048 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game2048);
 
-        GridLayout gridLayout = findViewById(R.id.gridLayout2048);
+        gridLayout = findViewById(R.id.gridLayout2048);
 
-        int rows = gridLayout.getRowCount();
-        int columns = gridLayout.getColumnCount();
+        rows = gridLayout.getRowCount();
+        columns = gridLayout.getColumnCount();
 
-        createTableGame(gridLayout, rows, columns);
+        createTableGame();
 
-        createInitCells(gridLayout, rows, columns);
+        createInitCells();
 
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,9 +46,45 @@ public class Game2048 extends AppCompatActivity {
                 backToTitle();
             }
         });
+
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                float diffX = e2.getX() - e1.getX();
+                float diffY = e2.getY() - e1.getY();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            Log.d("swipe", "right");
+                        } else {
+                            Log.d("swipe", "left");
+                        }
+                    }
+                } else {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            Log.d("swipe", "down");
+                        } else {
+                            Log.d("swipe", "up");
+                        }
+                    }
+                }
+                return super.onFling(e1, e2, velocityX, velocityY);
+
+            }
+        });
     }
 
-    private void createInitCells(GridLayout gridLayout, int rows, int columns) {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    private void createInitCells() {
         for(int i = 0; i < 2;i++){
             double random = Math.random();
             int randomRow = (int) (Math.random() * rows);
@@ -77,7 +121,7 @@ public class Game2048 extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createTableGame(GridLayout gridLayout, int rows, int columns) {
+    private void createTableGame() {
         for (int i = 0; i < rows; i++) {
             for(int j = 0; j < columns; j++){
                 TextView voidCell = new TextView(new ContextThemeWrapper(this, R.style.voidCells2048));
@@ -92,4 +136,6 @@ public class Game2048 extends AppCompatActivity {
             }
         }
     }
+
+    private void
 }
