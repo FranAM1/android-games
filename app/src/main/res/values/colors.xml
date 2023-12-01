@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="logo_color">#FFFF0F</color>
-    <color name="version_color">#f0f0f0</color>
-    <color name="version_bkgrd">#1a1a48</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gridBrown">#BBADA0</color>
+    <color name="titleBrown">#776E65</color>
+    <color name="buttonBrown">#8F7A66</color>
+    <color name="cellBrown">#CDC1B4</color>
+    <color name="backgroundBrown">#FAF8EF</color>
+    <color name="pieceBrown">#4C3825</color>
+    <color name="cell2">#EEE4DA</color>
+    <color name="cell4">#EEE1C9</color>
+    <color name="cell8">#F3B27A</color>
+    <color name="cell16">#F69664</color>
+    <color name="cell32">#F77C5F</color>
 </resources>

@@ -97,93 +97,13 @@
         android:layout_height="350dp"
         android:background="@drawable/rounded_border_score2048"
         android:columnCount="4"
-        android:padding="10dp"
         android:rowCount="4"
+        android:padding="5dp"
+        android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
-        <TextView
-            style="@style/gridCells"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1" />
-
     </GridLayout>
 
     <Button

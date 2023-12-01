@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="gridCells">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
+    <style name="voidCells2048">
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">5dp</item>
         <item name="android:background">@drawable/rounded_border_cell2048</item>
+    </style>
+
+    <style name="pieceCells2048">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/cell2</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="voidPieceStyle">
