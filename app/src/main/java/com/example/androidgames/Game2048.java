@@ -3,6 +3,7 @@ package com.example.androidgames;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,16 +61,20 @@ public class Game2048 extends AppCompatActivity {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffX > 0) {
                             Log.d("swipe", "right");
+                            moveRight();
                         } else {
                             Log.d("swipe", "left");
+                            moveLeft();
                         }
                     }
                 } else {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
                             Log.d("swipe", "down");
+                            moveDown();
                         } else {
                             Log.d("swipe", "up");
+                            moveUp();
                         }
                     }
                 }
@@ -95,24 +100,31 @@ public class Game2048 extends AppCompatActivity {
                 randomCol = (int) (Math.random() * columns);
             }
 
-            TextView startCell = new TextView(new ContextThemeWrapper(this, R.style.pieceCells2048));
-
-            if (random <= percentage2){
-                startCell.setText("2");
-            }else{
-                startCell.setText("4");
+            if(random < percentage2){
+                board[randomRow][randomCol] = 2;
+            } else {
+                board[randomRow][randomCol] = 4;
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rowSpec = GridLayout.spec(randomRow, 1f);
+            updateBoard();
+        }
+    }
 
-                params.columnSpec = GridLayout.spec(randomCol, 1f);
-                board[randomRow][randomCol] = Integer.parseInt(startCell.getText().toString());
-                startCell.setLayoutParams(params);
+    private void updateBoard() {
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                TextView cell = (TextView) gridLayout.getChildAt(i * columns + j);
+                if(board[i][j] != 0){
+                    cell.setText(String.valueOf(board[i][j]));
+                    //set style of peiceCells2048
+                    cell.setTextAppearance(this, R.style.pieceCells2048);
+                    cell.setBackgroundResource(R.drawable.cell2);
+                } else {
+                    cell.setText("");
+                    cell.setTextAppearance(this, R.style.voidCells2048);
+                    cell.setBackgroundResource(R.drawable.rounded_border_cell2048);
+                }
             }
-
-            gridLayout.addView(startCell);
         }
     }
 
@@ -137,5 +149,71 @@ public class Game2048 extends AppCompatActivity {
         }
     }
 
-    private void
+    private void moveUp(){
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                if(board[i][j] != 0){
+                    int k = i;
+                    while(k > 0 && board[k-1][j] == 0){
+                        board[k-1][j] = board[k][j];
+                        board[k][j] = 0;
+                        k--;
+                    }
+                }
+            }
+        }
+
+        updateBoard();
+    }
+
+    private void moveDown(){
+        for(int i = rows - 1; i >= 0; i--){
+            for(int j = 0; j < columns; j++){
+                if(board[i][j] != 0){
+                    int k = i;
+                    while(k < rows - 1 && board[k+1][j] == 0){
+                        board[k+1][j] = board[k][j];
+                        board[k][j] = 0;
+                        k++;
+                    }
+                }
+            }
+        }
+
+        updateBoard();
+    }
+
+    private void moveLeft(){
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                if(board[i][j] != 0){
+                    int k = j;
+                    while(k > 0 && board[i][k-1] == 0){
+                        board[i][k-1] = board[i][k];
+                        board[i][k] = 0;
+                        k--;
+                    }
+                }
+            }
+        }
+
+        updateBoard();
+    }
+
+    private void moveRight(){
+        for(int i = 0; i < rows; i++){
+            for(int j = columns - 1; j >= 0; j--){
+                if(board[i][j] != 0){
+                    int k = j;
+                    while(k < columns - 1 && board[i][k+1] == 0){
+                        board[i][k+1] = board[i][k];
+                        board[i][k] = 0;
+                        k++;
+                    }
+                }
+            }
+        }
+
+        updateBoard();
+    }
 }
