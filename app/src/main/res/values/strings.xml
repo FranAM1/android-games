@@ -6,4 +6,5 @@
     <string name="best">BEST</string>
     <string name="back">BACK</string>
     <string name="newGame">NEW GAME</string>
+    <string name="copyrightText">Version 1.0.0\nCopyright © 2023 RiotGames\nAll Rights Reserved.</string>
 </resources>
