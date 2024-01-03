@@ -13,4 +13,10 @@
     <color name="cell8">#F3B27A</color>
     <color name="cell16">#F69664</color>
     <color name="cell32">#F77C5F</color>
+    <color name="cell64">#F75F3B</color>
+    <color name="cell128">#EDD073</color>
+    <color name="cell256">#EDCC62</color>
+    <color name="cell512">#EDC950</color>
+    <color name="cell1024">#EDC53F</color>
+    <color name="cell2048">#EDC22E</color>
 </resources>
