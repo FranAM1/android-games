@@ -124,7 +124,7 @@ public class Game2048 extends AppCompatActivity {
             if(random < percentage2){
                 board[randomRow][randomCol] = 2;
             } else {
-                board[randomRow][randomCol] = 4;
+                board[randomRow][randomCol] = 2048;
             }
         }
         updateBoard();
