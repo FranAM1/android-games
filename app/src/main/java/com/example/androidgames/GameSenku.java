@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class GameSenku extends AppCompatActivity {
-    int[] voidCells = {1,2,6,7,8,9,13,14,36,37,41,42,43,44,48,49};
 
+    int[][] board = new int[7][7];
     TextView pieceSelected = null;
 
     @Override
@@ -30,8 +30,6 @@ public class GameSenku extends AppCompatActivity {
 
 
         createTableGame();
-
-        int id = 127;
 
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,76 +44,24 @@ public class GameSenku extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createTableGame() {
-        GridLayout gridLayout = findViewById(R.id.gridLayout2048);
+    private void createBaseBoard() {
+        for (int i = 0; i < 7; i++){
+            for (int j = 0; j < 7; j++){
+                board[i][j] = 0;
+                if ((i < 2 || i > 4) && (j < 2 || j > 4)) {
+                    board[i][j] = 0;
 
-        int rows = 7;
-        int columns = 7;
-        int id = 0;
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                TextView textView;
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                id++;
-
-                boolean isIdInVoidCells = false;
-
-                for (int voidCell : voidCells) {
-                    if (id == voidCell) {
-                        isIdInVoidCells = true;
-                        break;
-                    }
-                }
-                if (isIdInVoidCells){
-                    textView = new TextView(new ContextThemeWrapper(this, R.style.invisiblePiece));
                 } else {
-                    textView = new TextView(new ContextThemeWrapper(this, R.style.voidPieceStyle));
-                    addClickListenerToVoid(textView);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        params.rowSpec = GridLayout.spec(row, 1f);
-
-                        params.columnSpec = GridLayout.spec(col, 1f);
-                        textView.setLayoutParams(params);
-                    }
-                    gridLayout.addView(textView);
-
-                }
-                textView.setId(id);
-            }
-        }
-
-        id = 100;
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                TextView piece = null;
-                id++;
-
-                boolean isIdInVoidCells = false;
-
-                for (int voidCell : voidCells) {
-                    if ((id-100) == voidCell) {
-                        isIdInVoidCells = true;
-                        break;
-                    }
-                }
-                if (!isIdInVoidCells && id != 125){
-                    piece = new TextView(new ContextThemeWrapper(this, R.style.pieceStyle));
-                    addClickListenerToPiece(piece);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                        params.rowSpec = GridLayout.spec(row, 1f);
-
-                        params.columnSpec = GridLayout.spec(col, 1f);
-                        piece.setLayoutParams(params);
-                    }
-                    gridLayout.addView(piece);
-                    piece.setId(id);
+                    board[i][j] = 1;
                 }
             }
         }
+    }
+
+    private void createTableGame() {
+        createBaseBoard();
+
+        System.out.println("Valor del array: "+Arrays.deepToString(board));
     }
 
     private void addClickListenerToPiece(View piece) {
