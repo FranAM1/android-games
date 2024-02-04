@@ -35,7 +35,8 @@ public class GameSenku extends AppCompatActivity {
 
         createTableGame();
 
-        contador = new Contador();
+        TextView timeView = findViewById(R.id.timeView);
+        contador = new Contador(timeView);
         Thread thread = new Thread(contador);
         thread.start();
 
