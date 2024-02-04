@@ -56,14 +56,17 @@ public class GameSenku extends AppCompatActivity {
                 if ((row < 2 || row > 4) && (column < 2 || column > 4)) {
                     textView = new TextView(new ContextThemeWrapper(this, R.style.invisiblePiece));
                     board[row][column] = 0;
+                    Position position = new Position(row, column, "invisible");
+                    textView.setTag(position);
                 } else {
                     textView = new TextView(new ContextThemeWrapper(this, R.style.voidPieceStyle));
                     addClickListenerToVoid(textView);
                     board[row][column] = 1;
+                    Position position = new Position(row, column, "void");
+                    textView.setTag(position);
                 }
 
-                Position position = new Position(row, column);
-                textView.setTag(position);
+
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     params.rowSpec = GridLayout.spec(row, 1f);
@@ -93,8 +96,8 @@ public class GameSenku extends AppCompatActivity {
                         textView.setLayoutParams(params);
                     }
                     gridLayout.addView(textView);
-
-                    Position position = new Position(row, column);
+                    board[row][column] = 2;
+                    Position position = new Position(row, column, "piece");
                     textView.setTag(position);
                 }
             }
@@ -148,8 +151,12 @@ public class GameSenku extends AppCompatActivity {
                             animator.setDuration(200);
                             animator.start();
                         }
-                        pieceSelected.setTag(positionSelected.getTag());
+                        Position piecePosition = (Position) pieceSelected.getTag();
+                        piecePosition.setRow(((Position) positionSelected.getTag()).getRow());
+                        piecePosition.setColumn(((Position) positionSelected.getTag()).getColumn());
                         pieceSelected = null;
+                    }else{
+                        System.out.println("No se puede mover");
                     }
                 }
             }
@@ -164,27 +171,49 @@ public class GameSenku extends AppCompatActivity {
 
         if (piecePosition.getRow() == movePosition.getRow()){
             if (piecePosition.getColumn() - movePosition.getColumn() == 2){
-                if (board[piecePosition.getRow()][piecePosition.getColumn() - 1] == 1){
+                if (board[piecePosition.getRow()][piecePosition.getColumn() - 1] == 2){
+                    deletePiece(new Position(piecePosition.getRow(), piecePosition.getColumn() - 1, "piece"));
                     canMove = true;
                 }
             } else if (movePosition.getColumn() - piecePosition.getColumn() == 2){
-                if (board[piecePosition.getRow()][piecePosition.getColumn() + 1] == 1){
+                if (board[piecePosition.getRow()][piecePosition.getColumn() + 1] == 2){
+                    deletePiece(new Position(piecePosition.getRow(), piecePosition.getColumn() + 1, "piece"));
                     canMove = true;
                 }
             }
         } else if (piecePosition.getColumn() == movePosition.getColumn()){
             if (piecePosition.getRow() - movePosition.getRow() == 2){
-                if (board[piecePosition.getRow() - 1][piecePosition.getColumn()] == 1){
+                if (board[piecePosition.getRow() - 1][piecePosition.getColumn()] == 2){
+                    deletePiece(new Position(piecePosition.getRow() - 1, piecePosition.getColumn(),"piece"));
                     canMove = true;
                 }
             } else if (movePosition.getRow() - piecePosition.getRow() == 2){
-                if (board[piecePosition.getRow() + 1][piecePosition.getColumn()] == 1){
+                if (board[piecePosition.getRow() + 1][piecePosition.getColumn()] == 2){
+                    deletePiece(new Position(piecePosition.getRow() + 1, piecePosition.getColumn(),"piece"));
                     canMove = true;
                 }
             }
         }
 
+        if (canMove){
+            board[piecePosition.getRow()][piecePosition.getColumn()] = 1;
+            board[movePosition.getRow()][movePosition.getColumn()] = 2;
+        }
+
         return canMove;
+    }
+
+    private void deletePiece(Position position){
+        board[position.getRow()][position.getColumn()] = 1;
+
+        for (int i = 0; i < gridLayout.getChildCount(); i++){
+            TextView piece = (TextView) gridLayout.getChildAt(i);
+            Position piecePosition = (Position) piece.getTag();
+            if (piecePosition.getRow() == position.getRow() && piecePosition.getColumn() == position.getColumn() && piecePosition.getType().equals("piece")){
+                gridLayout.removeView(piece);
+                break;
+            }
+        }
     }
 
 }
