@@ -23,6 +23,7 @@ public class GameSenku extends AppCompatActivity {
     int[][] board = new int[7][7];
     TextView pieceSelected = null;
     TextView positionSelected = null;
+    private Contador contador;
 
     GridLayout gridLayout;
 
@@ -34,12 +35,24 @@ public class GameSenku extends AppCompatActivity {
 
         createTableGame();
 
+        contador = new Contador();
+        Thread thread = new Thread(contador);
+        thread.start();
+
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 backToTitle();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (contador != null) {
+            contador.detenerContador();
+        }
     }
 
     private void backToTitle() {
