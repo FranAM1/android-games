@@ -22,6 +22,7 @@ public class GameSenku extends AppCompatActivity {
 
     int[][] board = new int[7][7];
     TextView pieceSelected = null;
+    TextView positionSelected = null;
 
     GridLayout gridLayout;
 
@@ -132,23 +133,58 @@ public class GameSenku extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (pieceSelected != null){
-                    pieceSelected.setBackgroundResource(R.drawable.piece_senku);
+                    positionSelected = (TextView) view;
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Path path = new Path();
-                        path.moveTo(pieceSelected.getX(), pieceSelected.getY());
-                        path.lineTo(view.getX(), view.getY());
+                    if (checkIfPieceCanMove()){
+                        pieceSelected.setBackgroundResource(R.drawable.piece_senku);
+                        //animacion
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Path path = new Path();
+                            path.moveTo(pieceSelected.getX(), pieceSelected.getY());
+                            path.lineTo(view.getX(), view.getY());
 
-                        // Crear y ejecutar la animación
-                        ObjectAnimator animator = ObjectAnimator.ofFloat(pieceSelected, View.X, View.Y, path);
-                        animator.setDuration(200);
-                        animator.start();
+                            // Crear y ejecutar la animación
+                            ObjectAnimator animator = ObjectAnimator.ofFloat(pieceSelected, View.X, View.Y, path);
+                            animator.setDuration(200);
+                            animator.start();
+                        }
+                        pieceSelected.setTag(positionSelected.getTag());
+                        pieceSelected = null;
                     }
-
-                    pieceSelected = null;
                 }
             }
         });
+    }
+
+    private boolean checkIfPieceCanMove(){
+        boolean canMove = false;
+
+        Position piecePosition = (Position) pieceSelected.getTag();
+        Position movePosition = (Position) positionSelected.getTag();
+
+        if (piecePosition.getRow() == movePosition.getRow()){
+            if (piecePosition.getColumn() - movePosition.getColumn() == 2){
+                if (board[piecePosition.getRow()][piecePosition.getColumn() - 1] == 1){
+                    canMove = true;
+                }
+            } else if (movePosition.getColumn() - piecePosition.getColumn() == 2){
+                if (board[piecePosition.getRow()][piecePosition.getColumn() + 1] == 1){
+                    canMove = true;
+                }
+            }
+        } else if (piecePosition.getColumn() == movePosition.getColumn()){
+            if (piecePosition.getRow() - movePosition.getRow() == 2){
+                if (board[piecePosition.getRow() - 1][piecePosition.getColumn()] == 1){
+                    canMove = true;
+                }
+            } else if (movePosition.getRow() - piecePosition.getRow() == 2){
+                if (board[piecePosition.getRow() + 1][piecePosition.getColumn()] == 1){
+                    canMove = true;
+                }
+            }
+        }
+
+        return canMove;
     }
 
 }
