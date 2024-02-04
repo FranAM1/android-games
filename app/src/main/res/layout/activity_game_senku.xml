@@ -86,12 +86,12 @@
         android:text="@string/newGame"
         android:textColor="@color/backgroundBrown"
         android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayoutSenku"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
     <GridLayout
-        android:id="@+id/gridLayout2048"
+        android:id="@+id/gridLayoutSenku"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@drawable/rounded_border_score2048"
@@ -119,6 +119,6 @@
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout2048" />
+        app:layout_constraintTop_toBottomOf="@+id/gridLayoutSenku" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

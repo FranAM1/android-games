@@ -23,11 +23,13 @@ public class GameSenku extends AppCompatActivity {
     int[][] board = new int[7][7];
     TextView pieceSelected = null;
 
+    GridLayout gridLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_senku);
-
+        gridLayout = findViewById(R.id.gridLayoutSenku);
 
         createTableGame();
 
@@ -45,14 +47,54 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void createBaseBoard() {
-        for (int i = 0; i < 7; i++){
-            for (int j = 0; j < 7; j++){
-                board[i][j] = 0;
-                if ((i < 2 || i > 4) && (j < 2 || j > 4)) {
-                    board[i][j] = 0;
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                TextView textView;
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 
+                if ((row < 2 || row > 4) && (column < 2 || column > 4)) {
+                    textView = new TextView(new ContextThemeWrapper(this, R.style.invisiblePiece));
+                    board[row][column] = 0;
                 } else {
-                    board[i][j] = 1;
+                    textView = new TextView(new ContextThemeWrapper(this, R.style.voidPieceStyle));
+                    addClickListenerToVoid(textView);
+                    board[row][column] = 1;
+                }
+
+                Position position = new Position(row, column);
+                textView.setTag(position);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    params.rowSpec = GridLayout.spec(row, 1f);
+                    params.columnSpec = GridLayout.spec(column, 1f);
+                    textView.setLayoutParams(params);
+                }
+
+                gridLayout.addView(textView);
+            }
+        }
+    }
+
+    private void createPieces() {
+        for (int row = 0; row < 7; row++){
+            for (int column = 0; column < 7; column++){
+                TextView textView;
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+
+                if (board[row][column] == 1 && (row != 3 || column != 3)){
+                    textView = new TextView(new ContextThemeWrapper(this, R.style.pieceStyle));
+                    textView.setBackgroundResource(R.drawable.piece_senku);
+                    addClickListenerToPiece(textView);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        params.rowSpec = GridLayout.spec(row, 1f);
+                        params.columnSpec = GridLayout.spec(column, 1f);
+                        textView.setLayoutParams(params);
+                    }
+                    gridLayout.addView(textView);
+
+                    Position position = new Position(row, column);
+                    textView.setTag(position);
                 }
             }
         }
@@ -60,6 +102,7 @@ public class GameSenku extends AppCompatActivity {
 
     private void createTableGame() {
         createBaseBoard();
+        createPieces();
 
         System.out.println("Valor del array: "+Arrays.deepToString(board));
     }
