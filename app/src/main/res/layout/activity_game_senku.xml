@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_border_score2048"
         android:gravity="center"
@@ -124,7 +124,7 @@
     <GridLayout
         android:id="@+id/gridLayoutSenku"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="320dp"
         android:background="@drawable/rounded_border_score2048"
         android:columnCount="7"
         android:rowCount="7"
