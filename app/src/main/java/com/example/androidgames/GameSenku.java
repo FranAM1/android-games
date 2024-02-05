@@ -1,5 +1,6 @@
 package com.example.androidgames;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.TypedArrayUtils;
 
@@ -12,6 +13,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -169,12 +171,22 @@ public class GameSenku extends AppCompatActivity {
                         piecePosition.setRow(((Position) positionSelected.getTag()).getRow());
                         piecePosition.setColumn(((Position) positionSelected.getTag()).getColumn());
                         pieceSelected = null;
+                        if (checkGameOver()){
+                            showGameOverDialog();
+                        }
                     }else{
                         System.out.println("No se puede mover");
                     }
                 }
             }
         });
+    }
+
+    public void showGameOverDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game Over");
+        builder.setMessage("You lost the game");
+        builder.show();
     }
 
     private boolean checkIfPieceCanMove(){
@@ -228,6 +240,40 @@ public class GameSenku extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    private boolean checkGameOver() {
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                if (board[row][column] == 2) { // Si hay una pieza en la posición actual
+                    // Verificar si hay algún movimiento posible para esta pieza
+                    if (checkPossibleMoves(new Position(row, column, "piece"))) {
+                        return false; // Hay al menos un movimiento posible, el juego no ha terminado
+                    }
+                }
+            }
+        }
+        return true; // No hay movimientos posibles para ninguna pieza, el juego ha terminado
+    }
+
+    private boolean checkPossibleMoves(Position position) {
+        // Verificar si hay un movimiento posible hacia arriba
+        if (position.getRow() >= 2 && board[position.getRow() - 1][position.getColumn()] == 2 && board[position.getRow() - 2][position.getColumn()] == 1) {
+            return true;
+        }
+        // Verificar si hay un movimiento posible hacia abajo
+        if (position.getRow() <= 4 && board[position.getRow() + 1][position.getColumn()] == 2 && board[position.getRow() + 2][position.getColumn()] == 1) {
+            return true;
+        }
+        // Verificar si hay un movimiento posible hacia la izquierda
+        if (position.getColumn() >= 2 && board[position.getRow()][position.getColumn() - 1] == 2 && board[position.getRow()][position.getColumn() - 2] == 1) {
+            return true;
+        }
+        // Verificar si hay un movimiento posible hacia la derecha
+        if (position.getColumn() <= 4 && board[position.getRow()][position.getColumn() + 1] == 2 && board[position.getRow()][position.getColumn() + 2] == 1) {
+            return true;
+        }
+        return false;
     }
 
 }
