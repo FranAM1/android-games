@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.GridLayout;
@@ -25,7 +26,8 @@ public class GameSenku extends AppCompatActivity {
     int[][] board = new int[7][7];
     TextView pieceSelected = null;
     TextView positionSelected = null;
-    private Contador contador;
+    private TextView timeView;
+    private CountDownTimer timer;
 
     GridLayout gridLayout;
 
@@ -34,13 +36,10 @@ public class GameSenku extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_senku);
         gridLayout = findViewById(R.id.gridLayoutSenku);
+        timeView = findViewById(R.id.timeView);
 
         createTableGame();
-
-        TextView timeView = findViewById(R.id.timeView);
-        contador = new Contador(timeView);
-        Thread thread = new Thread(contador);
-        thread.start();
+        startCountdownTimer();
 
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,14 +52,43 @@ public class GameSenku extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (contador != null) {
-            contador.detenerContador();
-        }
+        timer.cancel();
     }
 
     private void backToTitle() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void startCountdownTimer() {
+        timer = new CountDownTimer(6000, 1000) { // 60 segundos, actualizando cada segundo
+            public void onTick(long millisUntilFinished) {
+                timeView.setText(""+(millisUntilFinished / 1000));
+            }
+
+            public void onFinish() {
+                showGameOverDialog();
+            }
+        }.start();
+    }
+
+    private boolean checkWin() {
+        int pieces = 0;
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                if (board[row][column] == 2) {
+                    pieces++;
+                }
+            }
+        }
+        return pieces == 1;
+    }
+
+    private void showWinDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Congratulations");
+        builder.setMessage("You won the game");
+        builder.show();
     }
 
     private void createBaseBoard() {
@@ -173,6 +201,8 @@ public class GameSenku extends AppCompatActivity {
                         pieceSelected = null;
                         if (checkGameOver()){
                             showGameOverDialog();
+                        } else if (checkWin()){
+                            showWinDialog();
                         }
                     }else{
                         System.out.println("No se puede mover");
