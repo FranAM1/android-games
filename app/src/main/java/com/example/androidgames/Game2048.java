@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +62,13 @@ public class Game2048 extends AppCompatActivity {
         createTableGame();
 
         createInitCells();
+
+        findViewById(R.id.buttonNewGame).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startNewGame();
+            }
+        });
 
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +136,24 @@ public class Game2048 extends AppCompatActivity {
             }
         }
         updateBoard();
+    }
+
+    public void startNewGame() {
+        resetBoard();
+        resetScore();
+    }
+
+    public void resetScore() {
+        score.setText("0");
+    }
+
+    private void resetBoard() {
+        gridLayout.removeAllViews();
+        for (int row = 0; row < board.length; row++) {
+            Arrays.fill(board[row], 0);
+        }
+        createTableGame();
+        createInitCells();
     }
 
     private void updateBoard() {

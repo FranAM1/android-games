@@ -41,6 +41,13 @@ public class GameSenku extends AppCompatActivity {
         createTableGame();
         startCountdownTimer();
 
+        findViewById(R.id.buttonNewGame).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startNewGame(view);
+            }
+        });
+
         findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +77,26 @@ public class GameSenku extends AppCompatActivity {
                 showGameOverDialog();
             }
         }.start();
+    }
+
+    public void startNewGame(View view) {
+        resetBoard();
+        restartTimer();
+    }
+
+    private void resetBoard() {
+        gridLayout.removeAllViews();
+        for (int row = 0; row < board.length; row++) {
+            Arrays.fill(board[row], 0);
+        }
+        createTableGame();
+    }
+
+    private void restartTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        startCountdownTimer();
     }
 
     private boolean checkWin() {
