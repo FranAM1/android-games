@@ -24,8 +24,10 @@ import java.util.Collections;
 public class GameSenku extends AppCompatActivity {
 
     int[][] board = new int[7][7];
+    int[][] lastMove = new int[7][7];
     TextView pieceSelected = null;
     TextView positionSelected = null;
+    private TextView undoButton;
     private TextView timeView;
     private CountDownTimer timer;
 
@@ -37,9 +39,18 @@ public class GameSenku extends AppCompatActivity {
         setContentView(R.layout.activity_game_senku);
         gridLayout = findViewById(R.id.gridLayoutSenku);
         timeView = findViewById(R.id.timeView);
+        undoButton = findViewById(R.id.undoButton);
+        makeUndoButtonInvisible();
 
         createTableGame();
         startCountdownTimer();
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                undoLastMove();
+            }
+        });
 
         findViewById(R.id.buttonNewGame).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +67,42 @@ public class GameSenku extends AppCompatActivity {
         });
     }
 
+    private void undoLastMove() {
+        redrawBoard();
+        makeUndoButtonInvisible();
+    }
+
+    private void redrawBoard() {
+        gridLayout.removeAllViews();
+        createBaseBoard();
+
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                board[row][column] = lastMove[row][column];
+            }
+        }
+
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                if (board[row][column] == 2) {
+                    TextView textView = new TextView(new ContextThemeWrapper(this, R.style.pieceStyle));
+                    textView.setBackgroundResource(R.drawable.piece_senku);
+                    addClickListenerToPiece(textView);
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        params.rowSpec = GridLayout.spec(row, 1f);
+                        params.columnSpec = GridLayout.spec(column, 1f);
+                        textView.setLayoutParams(params);
+                    }
+                    gridLayout.addView(textView);
+                    Position position = new Position(row, column, "piece");
+                    textView.setTag(position);
+                }
+            }
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -68,7 +115,7 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void startCountdownTimer() {
-        timer = new CountDownTimer(6000, 1000) { // 60 segundos, actualizando cada segundo
+        timer = new CountDownTimer(600000, 1000) { // 60 segundos, actualizando cada segundo
             public void onTick(long millisUntilFinished) {
                 timeView.setText(""+(millisUntilFinished / 1000));
             }
@@ -77,6 +124,14 @@ public class GameSenku extends AppCompatActivity {
                 showGameOverDialog();
             }
         }.start();
+    }
+
+    private void saveLastMove() {
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                lastMove[row][column] = board[row][column];
+            }
+        }
     }
 
     public void startNewGame(View view) {
@@ -109,6 +164,14 @@ public class GameSenku extends AppCompatActivity {
             }
         }
         return pieces == 1;
+    }
+
+    private void makeUndoButtonVisible() {
+        undoButton.setVisibility(View.VISIBLE);
+    }
+
+    private void makeUndoButtonInvisible() {
+        undoButton.setVisibility(View.INVISIBLE);
     }
 
     private void showWinDialog() {
@@ -231,6 +294,7 @@ public class GameSenku extends AppCompatActivity {
                         } else if (checkWin()){
                             showWinDialog();
                         }
+                        makeUndoButtonVisible();
                     }else{
                         System.out.println("No se puede mover");
                     }
@@ -255,11 +319,13 @@ public class GameSenku extends AppCompatActivity {
         if (piecePosition.getRow() == movePosition.getRow()){
             if (piecePosition.getColumn() - movePosition.getColumn() == 2){
                 if (board[piecePosition.getRow()][piecePosition.getColumn() - 1] == 2){
+                    saveLastMove();
                     deletePiece(new Position(piecePosition.getRow(), piecePosition.getColumn() - 1, "piece"));
                     canMove = true;
                 }
             } else if (movePosition.getColumn() - piecePosition.getColumn() == 2){
                 if (board[piecePosition.getRow()][piecePosition.getColumn() + 1] == 2){
+                    saveLastMove();
                     deletePiece(new Position(piecePosition.getRow(), piecePosition.getColumn() + 1, "piece"));
                     canMove = true;
                 }
@@ -267,11 +333,13 @@ public class GameSenku extends AppCompatActivity {
         } else if (piecePosition.getColumn() == movePosition.getColumn()){
             if (piecePosition.getRow() - movePosition.getRow() == 2){
                 if (board[piecePosition.getRow() - 1][piecePosition.getColumn()] == 2){
+                    saveLastMove();
                     deletePiece(new Position(piecePosition.getRow() - 1, piecePosition.getColumn(),"piece"));
                     canMove = true;
                 }
             } else if (movePosition.getRow() - piecePosition.getRow() == 2){
                 if (board[piecePosition.getRow() + 1][piecePosition.getColumn()] == 2){
+                    saveLastMove();
                     deletePiece(new Position(piecePosition.getRow() + 1, piecePosition.getColumn(),"piece"));
                     canMove = true;
                 }
