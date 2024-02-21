@@ -41,17 +41,32 @@ public class Game2048 extends AppCompatActivity {
     double percentage2 = 0.6;
 
     int[][] board = new int[4][4];
+    int[][] lastMove = new int[4][4];
 
     private GridLayout gridLayout;
 
+    private TextView undoButton;
+
     private TextView score;
     private int rows, columns;
+
+    private int countMoves = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game2048);
+
+        undoButton = findViewById(R.id.undoButton);
+        makeUndoButtonInvisible();
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                undoLastMove();
+            }
+        });
 
         gridLayout = findViewById(R.id.gridLayout2048);
         score = findViewById(R.id.score);
@@ -113,6 +128,47 @@ public class Game2048 extends AppCompatActivity {
         });
     }
 
+    private void saveLastMove() {
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                lastMove[i][j] = board[i][j];
+            }
+        }
+        makeUndoButtonVisible();
+    }
+
+    private void undoLastMove() {
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                board[i][j] = 0;
+            }
+        }
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                board[i][j] = lastMove[i][j];
+            }
+        }
+        redrawBoard();
+        makeUndoButtonInvisible();
+    }
+
+    private void redrawBoard() {
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                TextView cell = (TextView) gridLayout.getChildAt(i * columns + j);
+                if(board[i][j] != 0){
+                    cell.setText(String.valueOf(board[i][j]));
+                    cell.setTextAppearance(this, R.style.pieceCells2048);
+                    assingColorToPiece(cell, String.valueOf(board[i][j]));
+                } else {
+                    cell.setText("");
+                    cell.setTextAppearance(this, R.style.voidCells2048);
+                    cell.setBackgroundResource(R.drawable.rounded_border_cell2048);
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
@@ -139,6 +195,7 @@ public class Game2048 extends AppCompatActivity {
     }
 
     public void startNewGame() {
+        makeUndoButtonInvisible();
         resetBoard();
         resetScore();
     }
@@ -164,7 +221,6 @@ public class Game2048 extends AppCompatActivity {
                 TextView cell = (TextView) gridLayout.getChildAt(i * columns + j);
                 if(board[i][j] != 0){
                     cell.setText(String.valueOf(board[i][j]));
-                    //set style of peiceCells2048
                     cell.setTextAppearance(this, R.style.pieceCells2048);
                     assingColorToPiece(cell, String.valueOf(board[i][j]));
                 } else {
@@ -175,7 +231,9 @@ public class Game2048 extends AppCompatActivity {
             }
         }
 
-        generateNewPiece();
+        if (countMoves != 0) {
+            generateNewPiece();
+        }
     }
 
     private void backToTitle() {
@@ -200,6 +258,7 @@ public class Game2048 extends AppCompatActivity {
     }
 
     private void moveUp(){
+        saveLastMove();
         for(int i = 1; i < rows; i++){
             for(int j = 0; j < columns; j++){
                 if(board[i][j] != 0){
@@ -222,11 +281,12 @@ public class Game2048 extends AppCompatActivity {
                 }
             }
         }
-
+        countMoves++;
         updateBoard();
     }
 
     private void moveDown(){
+        saveLastMove();
         for(int i = rows - 2; i >= 0; i--){
             for(int j = 0; j < columns; j++){
                 if(board[i][j] != 0){
@@ -249,11 +309,12 @@ public class Game2048 extends AppCompatActivity {
                 }
             }
         }
-
+        countMoves++;
         updateBoard();
     }
 
     private void moveLeft(){
+        saveLastMove();
         for(int i = 0; i < rows; i++){
             for(int j = 1; j < columns; j++){
                 if(board[i][j] != 0){
@@ -274,11 +335,12 @@ public class Game2048 extends AppCompatActivity {
                 }
             }
         }
-
+        countMoves++;
         updateBoard();
     }
 
     private void moveRight(){
+        saveLastMove();
         for(int i = 0; i < rows; i++){
             for(int j = columns - 2; j >= 0; j--){
                 if(board[i][j] != 0){
@@ -297,7 +359,7 @@ public class Game2048 extends AppCompatActivity {
                 }
             }
         }
-
+        countMoves++;
         updateBoard();
     }
 
@@ -377,6 +439,14 @@ public class Game2048 extends AppCompatActivity {
 
     private void assingColorToPiece(TextView piece, String text) {
         piece.setBackgroundResource(colorsOfCells.get(text));
+    }
+
+    private void makeUndoButtonVisible() {
+        undoButton.setVisibility(View.VISIBLE);
+    }
+
+    private void makeUndoButtonInvisible() {
+        undoButton.setVisibility(View.INVISIBLE);
     }
 
 

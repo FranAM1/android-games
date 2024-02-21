@@ -135,6 +135,7 @@ public class GameSenku extends AppCompatActivity {
     }
 
     public void startNewGame(View view) {
+        makeUndoButtonInvisible();
         resetBoard();
         restartTimer();
     }
@@ -164,14 +165,6 @@ public class GameSenku extends AppCompatActivity {
             }
         }
         return pieces == 1;
-    }
-
-    private void makeUndoButtonVisible() {
-        undoButton.setVisibility(View.VISIBLE);
-    }
-
-    private void makeUndoButtonInvisible() {
-        undoButton.setVisibility(View.INVISIBLE);
     }
 
     private void showWinDialog() {
@@ -399,6 +392,14 @@ public class GameSenku extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void makeUndoButtonVisible() {
+        undoButton.setVisibility(View.VISIBLE);
+    }
+
+    private void makeUndoButtonInvisible() {
+        undoButton.setVisibility(View.INVISIBLE);
     }
 
 }
