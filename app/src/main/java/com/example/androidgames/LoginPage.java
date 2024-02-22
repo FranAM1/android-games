@@ -78,4 +78,9 @@ public class LoginPage extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Deshabilitar el botón de retroceso
+    }
 }
