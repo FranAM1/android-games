@@ -10,6 +10,7 @@
     tools:context=".Game2048">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -23,6 +24,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_score2048"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_marginBottom="@dimen/size_2048"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout2048"
+        app:layout_constraintEnd_toStartOf="@+id/buttonNewGame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:textSize="24dp"
+            android:textColor="@color/backgroundBrown" />
+
+        <TextView
+            android:id="@+id/timeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/backgroundBrown"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -72,6 +104,7 @@
             android:textColor="@color/backgroundBrown" />
 
         <TextView
+            android:id="@+id/bestScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"

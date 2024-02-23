@@ -37,7 +37,7 @@ public class GameSenku extends AppCompatActivity {
     private int lastScore = 0;
     private TextView bestScore;
 
-    private int minutos = 5;
+    private int minutos = 2;
     private int segundos = 0;
 
     GridLayout gridLayout;
@@ -182,7 +182,7 @@ public class GameSenku extends AppCompatActivity {
 
     private void restartTimer() {
         timer.cancel();
-        minutos = 5;
+        minutos = 2;
         segundos = 00;
         startCountdownTimer();
     }
@@ -206,7 +206,7 @@ public class GameSenku extends AppCompatActivity {
         builder.setMessage("Victoria, has conseguido "+actualScore.getText()+" puntos")
                 .setTitle("Victoria")
                 .setCancelable(false)
-                .setPositiveButton("Resetear partida", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Nueva Partida", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         startNewGame();
@@ -347,7 +347,7 @@ public class GameSenku extends AppCompatActivity {
         builder.setMessage("Derrota, has conseguido "+actualScore.getText()+" puntos")
                 .setTitle("Derrota")
                 .setCancelable(false)
-                .setPositiveButton("Resetear partida", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Nueva partida", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         startNewGame();
@@ -361,7 +361,7 @@ public class GameSenku extends AppCompatActivity {
         int score = Integer.parseInt(actualScore.getText().toString());
 
         // Calcula la diferencia en segundos desde 600 segundos
-        int differenceTo600 = Math.abs((minutos * 60 + segundos) - 300);
+        int differenceTo600 = Math.abs((minutos * 60 + segundos) - 120);
 
         // Calcula los puntos por tiempo (máximo 60 puntos)
         int timeScore = Math.max(0, 60 - differenceTo600);

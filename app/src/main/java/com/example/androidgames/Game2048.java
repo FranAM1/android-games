@@ -3,10 +3,14 @@ package com.example.androidgames;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.GestureDetector;
@@ -37,6 +41,7 @@ public class Game2048 extends AppCompatActivity {
         put("2048", R.color.cell2048);
     }};
 
+    private SharedPreferences sharedPreferences;
     private GestureDetector gestureDetector;
     double percentage2 = 0.6;
 
@@ -44,12 +49,17 @@ public class Game2048 extends AppCompatActivity {
     int[][] lastMove = new int[4][4];
 
     private GridLayout gridLayout;
-
     private TextView undoButton;
-
+    private CountDownTimer timer;
+    private TextView timeView;
+    private int minutos = 2;
+    private int segundos = 0;
+    private TextView actualScore;
+    private TextView bestScore;
     private TextView score;
     private int lastScore;
     private int rows, columns;
+
 
 
     @Override
@@ -59,6 +69,11 @@ public class Game2048 extends AppCompatActivity {
 
         undoButton = findViewById(R.id.undoButton);
         makeUndoButtonInvisible();
+        timeView = findViewById(R.id.timeView);
+        actualScore = findViewById(R.id.score);
+        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        bestScore = findViewById(R.id.bestScore);
+        bestScore.setText(String.valueOf(sharedPreferences.getInt("bestScore2048", 0)));
 
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +91,8 @@ public class Game2048 extends AppCompatActivity {
         createTableGame();
 
         createInitCells();
+
+        startCountdownTimer();
 
         findViewById(R.id.buttonNewGame).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +142,60 @@ public class Game2048 extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(timer != null) {
+            timer.cancel();
+        }
+    }
+
+    private void startCountdownTimer() {
+        timer = new CountDownTimer((minutos * 60 + segundos) * 1000, 1000) { // 60 segundos, actualizando cada segundo
+            public void onTick(long millisUntilFinished) {
+
+                if (segundos == 0) {
+                    minutos--;
+                    segundos = 59;
+                } else {
+                    segundos--;
+                }
+                timeView.setText(String.format("%02d:%02d", minutos, segundos));
+            }
+
+            public void onFinish() {
+                showGameOverDialog();
+            }
+        }.start();
+    }
+
+    public void showGameOverDialog() {
+        timer.cancel();
+        checkBestScore();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Derrota, has conseguido "+actualScore.getText()+" puntos")
+                .setTitle("Derrota")
+                .setCancelable(false)
+                .setPositiveButton("Nueva partida", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        startNewGame();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void checkBestScore() {
+        int bestScore = sharedPreferences.getInt("bestScore2048", 0);
+        if(Integer.parseInt(actualScore.getText().toString()) > bestScore){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("bestScore2048", Integer.parseInt(actualScore.getText().toString()));
+            editor.apply();
+            this.bestScore.setText(String.valueOf(Integer.parseInt(actualScore.getText().toString())));
+        }
     }
 
     private void saveLastMove() {
@@ -197,6 +268,14 @@ public class Game2048 extends AppCompatActivity {
         makeUndoButtonInvisible();
         resetBoard();
         resetScore();
+        restartTimer();
+    }
+
+    private void restartTimer() {
+        timer.cancel();
+        minutos = 2;
+        segundos = 00;
+        startCountdownTimer();
     }
 
     public void resetScore() {
@@ -413,10 +492,7 @@ public class Game2048 extends AppCompatActivity {
             }
 
             if(!isPossibleMove){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Game Over");
-                builder.setMessage("You lost the game");
-                builder.show();
+                showGameOverDialog();
             }
         }
     }
