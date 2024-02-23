@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.TypedArrayUtils;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,8 +33,16 @@ public class GameSenku extends AppCompatActivity {
     private TextView undoButton;
     private TextView timeView;
     private CountDownTimer timer;
+    private TextView actualScore;
+    private int lastScore = 0;
+    private TextView bestScore;
+
+    private int minutos = 5;
+    private int segundos = 0;
 
     GridLayout gridLayout;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +51,11 @@ public class GameSenku extends AppCompatActivity {
         gridLayout = findViewById(R.id.gridLayoutSenku);
         timeView = findViewById(R.id.timeView);
         undoButton = findViewById(R.id.undoButton);
+        actualScore = findViewById(R.id.actualScore);
         makeUndoButtonInvisible();
+        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        bestScore = findViewById(R.id.bestScore);
+        bestScore.setText(String.valueOf(sharedPreferences.getInt("bestScoreSenku", 0)));
 
         createTableGame();
         startCountdownTimer();
@@ -55,7 +70,7 @@ public class GameSenku extends AppCompatActivity {
         findViewById(R.id.buttonNewGame).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startNewGame(view);
+                startNewGame();
             }
         });
 
@@ -68,8 +83,13 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void undoLastMove() {
+        actualScore.setText(String.valueOf(lastScore));
         redrawBoard();
         makeUndoButtonInvisible();
+    }
+
+    private void saveLastScore(){
+        lastScore = Integer.parseInt(actualScore.getText().toString());
     }
 
     private void redrawBoard() {
@@ -115,9 +135,16 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void startCountdownTimer() {
-        timer = new CountDownTimer(600000, 1000) { // 60 segundos, actualizando cada segundo
+        timer = new CountDownTimer((minutos*60+segundos)*1000, 1000) { // 60 segundos, actualizando cada segundo
             public void onTick(long millisUntilFinished) {
-                timeView.setText(""+(millisUntilFinished / 1000));
+
+                if(segundos == 0) {
+                    minutos--;
+                    segundos = 59;
+                }else{
+                    segundos--;
+                }
+                timeView.setText(String.format("%02d:%02d", minutos, segundos));
             }
 
             public void onFinish() {
@@ -134,10 +161,15 @@ public class GameSenku extends AppCompatActivity {
         }
     }
 
-    public void startNewGame(View view) {
+    public void startNewGame() {
         makeUndoButtonInvisible();
         resetBoard();
         restartTimer();
+        resetScore();
+    }
+
+    private void resetScore(){
+        actualScore.setText("0");
     }
 
     private void resetBoard() {
@@ -149,9 +181,9 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void restartTimer() {
-        if (timer != null) {
-            timer.cancel();
-        }
+        timer.cancel();
+        minutos = 5;
+        segundos = 00;
         startCountdownTimer();
     }
 
@@ -168,10 +200,20 @@ public class GameSenku extends AppCompatActivity {
     }
 
     private void showWinDialog() {
+        timer.cancel();
+        checkBestScore();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Congratulations");
-        builder.setMessage("You won the game");
-        builder.show();
+        builder.setMessage("Victoria, has conseguido "+actualScore.getText()+" puntos")
+                .setTitle("Victoria")
+                .setCancelable(false)
+                .setPositiveButton("Resetear partida", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        startNewGame();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void createBaseBoard() {
@@ -282,11 +324,13 @@ public class GameSenku extends AppCompatActivity {
                         piecePosition.setRow(((Position) positionSelected.getTag()).getRow());
                         piecePosition.setColumn(((Position) positionSelected.getTag()).getColumn());
                         pieceSelected = null;
-                        if (checkGameOver()){
-                            showGameOverDialog();
-                        } else if (checkWin()){
+                        calculScore();
+                        if (checkWin()){
                             showWinDialog();
+                        } else if (checkGameOver()){
+                            showGameOverDialog();
                         }
+
                         makeUndoButtonVisible();
                     }else{
                         System.out.println("No se puede mover");
@@ -297,14 +341,55 @@ public class GameSenku extends AppCompatActivity {
     }
 
     public void showGameOverDialog() {
+        timer.cancel();
+        checkBestScore();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Game Over");
-        builder.setMessage("You lost the game");
-        builder.show();
+        builder.setMessage("Derrota, has conseguido "+actualScore.getText()+" puntos")
+                .setTitle("Derrota")
+                .setCancelable(false)
+                .setPositiveButton("Resetear partida", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        startNewGame();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void calculScore(){
+        int score = Integer.parseInt(actualScore.getText().toString());
+
+        // Calcula la diferencia en segundos desde 600 segundos
+        int differenceTo600 = Math.abs((minutos * 60 + segundos) - 300);
+
+        // Calcula los puntos por tiempo (máximo 60 puntos)
+        int timeScore = Math.max(0, 60 - differenceTo600);
+
+        // Calcula los puntos por fichas restantes
+        int piecesScore = 32 - countRemainingPieces();
+
+
+        score += Math.min(60, timeScore) + piecesScore;
+        actualScore.setText(String.valueOf(score));
+        
+    }
+
+    private int countRemainingPieces() {
+        int count = 0;
+        for (int row = 0; row < 7; row++) {
+            for (int column = 0; column < 7; column++) {
+                if (board[row][column] == 2) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     private boolean checkIfPieceCanMove(){
         boolean canMove = false;
+        saveLastScore();
 
         Position piecePosition = (Position) pieceSelected.getTag();
         Position movePosition = (Position) positionSelected.getTag();
@@ -400,6 +485,17 @@ public class GameSenku extends AppCompatActivity {
 
     private void makeUndoButtonInvisible() {
         undoButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void checkBestScore(){
+        int score = Integer.parseInt(actualScore.getText().toString());
+        int bestScoreSenku = sharedPreferences.getInt("bestScoreSenku", 0);
+        if (score > bestScoreSenku){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("bestScoreSenku", score);
+            editor.apply();
+            bestScore.setText(String.valueOf(score));
+        }
     }
 
 }
