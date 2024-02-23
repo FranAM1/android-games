@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title_send"
             android:layout_margin="@dimen/version_size"
-            android:backgroundTint="@color/buttonBrown"
+            android:backgroundTint="@color/pieceBrown"
             android:textColor="@color/white"/>
 
         <Button
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_login"
-            android:backgroundTint="@color/pieceBrown"
+            android:backgroundTint="@color/buttonBrown"
             android:textColor="@color/white"/>
 
     </LinearLayout>

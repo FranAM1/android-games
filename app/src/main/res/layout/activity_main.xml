@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,59 +10,76 @@
     android:orientation="vertical"
     android:gravity="center">
 
+
+    <ImageView
+        android:id="@+id/iconUser"
+        android:layout_width="111dp"
+        android:layout_height="82dp"
+        android:layout_gravity="center"
+        android:src="@drawable/baseline_person_pin_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tittleApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="@dimen/title_size"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:layout_gravity="center"
-        />
+        android:layout_marginTop="220dp"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iconUser" />
 
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:gravity="center"
-        android:textSize="@dimen/size_2048"/>
-
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_2048"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tittleApp"
+        app:layout_constraintVertical_bias="0.325"
+        tools:layout_editor_absoluteX="16dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_below="@id/tittleApp"
         android:layout_centerHorizontal="true"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tittleApp"
+        app:layout_constraintVertical_bias="0.208">
 
         <Button
             android:id="@+id/btnStartGame2048"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_2048"
-            android:textColor="@color/backgroundBrown"
             android:layout_gravity="center"
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/buttonBrown"
-            />
+            android:text="@string/title_2048"
+            android:textColor="@color/backgroundBrown" />
 
         <Button
             android:id="@+id/btnStartSenku"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_senku"
-            android:textColor="@color/backgroundBrown"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:backgroundTint="@color/buttonBrown"
-            />
+            android:text="@string/title_senku"
+            android:textColor="@color/backgroundBrown" />
 
     </LinearLayout>
 
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
