@@ -94,11 +94,11 @@
                 style="@style/subTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Senku: " />
+                android:text="2048: " />
 
             <TextView
                 style="@style/scoresStyle"
-                android:id="@+id/highScoreSenku"
+                android:id="@+id/highScore2048"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0" />
@@ -116,11 +116,11 @@
                 style="@style/subTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2048: " />
+                android:text="Senku: " />
 
             <TextView
                 style="@style/scoresStyle"
-                android:id="@+id/highScore2048"
+                android:id="@+id/highScoreSenku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0" />

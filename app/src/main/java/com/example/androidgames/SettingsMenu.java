@@ -1,7 +1,9 @@
 package com.example.androidgames;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,10 +43,38 @@ public class SettingsMenu extends AppCompatActivity {
                 backToMainMenu();
             }
         });
+
+        findViewById(R.id.saveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveSettings(view);
+            }
+        });
     }
 
     private void backToMainMenu(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void saveSettings(View view){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", editTextUsername.getText().toString());
+        editor.putString("password", editTextPassword.getText().toString());
+        editor.apply();
+        showAppliedSettingsDialog(view);
+    }
+
+    public void showAppliedSettingsDialog(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Usuario y contraseña guardados")
+                .setTitle("Exito")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
