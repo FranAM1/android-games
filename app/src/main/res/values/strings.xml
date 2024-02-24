@@ -15,4 +15,7 @@
     <string name="title_register">Register</string>
     <string name="title_activity_register_page">RegisterPage</string>
     <string name="title_send">Send</string>
+    <string name="userInfoTitle">Change info user</string>
+    <string name="title_save">Save</string>
+    <string name="highscore_title">Highscores</string>
 </resources>

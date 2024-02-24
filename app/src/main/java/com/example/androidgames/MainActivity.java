@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.grow);
+        findViewById(R.id.iconUser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(growAnimation);
+                goToSettings();
+            }
+        });
+
         loadMessage();
     }
 
@@ -40,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         String savedUsername = sharedPreferences.getString("username", "");
         welcomeTextView.setText("Welcome " + savedUsername);
+    }
+
+    private void goToSettings() {
+        Intent intent = new Intent(this, SettingsMenu.class);
+        startActivity(intent);
     }
 
     private void start2048Game() {

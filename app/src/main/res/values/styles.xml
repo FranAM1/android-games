@@ -30,4 +30,22 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/piece_senku</item>
     </style>
+
+    <style name="titleStyle">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/titleBrown</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="subTitleStyle">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/pieceBrown</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="scoresStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
