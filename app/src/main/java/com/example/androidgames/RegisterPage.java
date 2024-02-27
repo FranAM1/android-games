@@ -15,6 +15,7 @@ import android.widget.EditText;
 public class RegisterPage extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
+    private EditText confirmPasswordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class RegisterPage extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
 
         Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -48,16 +50,29 @@ public class RegisterPage extends AppCompatActivity {
     public void handleRegister() {
         String username = usernameEditText.getText().toString();
         if (!username.equals("") && !checkIfUserExists(username)){
-            String password = passwordEditText.getText().toString();
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", username);
-            editor.putString("password", password);
-            editor.apply();
-            showOkMessage();
+            if (confirmPassword()){
+                String password = passwordEditText.getText().toString();
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username", username);
+                editor.putString("password", password);
+                editor.apply();
+                showOkMessage();
+            }else{
+                showPasswordErrorMessage();
+            }
         }else{
             showErrorMessage();
         }
+    }
+
+    private boolean confirmPassword(){
+        String password = passwordEditText.getText().toString();
+        String confirmPassword = confirmPasswordEditText.getText().toString();
+        if (password.equals(confirmPassword)){
+            return true;
+        }
+        return false;
     }
 
     private boolean checkIfUserExists(String username) {
@@ -85,6 +100,19 @@ public class RegisterPage extends AppCompatActivity {
     private void showErrorMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("El usuario ya existe o el nombre de usuario está vacío.")
+                .setTitle("Error")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Cierra el diálogo (no necesitas hacer nada aquí porque solo es un mensaje de error)
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showPasswordErrorMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Las contraseñas no coinciden.")
                 .setTitle("Error")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

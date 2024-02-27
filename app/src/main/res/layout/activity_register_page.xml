@@ -35,6 +35,15 @@
         android:textColor="@color/pieceBrown"
         android:textColorHint="@color/buttonBrown"/>
 
+    <EditText
+        android:id="@+id/confirmPasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_confirmPassword"
+        android:inputType="textPassword"
+        android:textColor="@color/pieceBrown"
+        android:textColorHint="@color/buttonBrown"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
