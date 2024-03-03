@@ -56,6 +56,8 @@ public class RegisterPage extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("username", username);
                 editor.putString("password", password);
+                editor.putInt("bestScore2048", 0);
+                editor.putInt("bestScoreSenku", 0);
                 editor.apply();
                 showOkMessage();
             }else{
