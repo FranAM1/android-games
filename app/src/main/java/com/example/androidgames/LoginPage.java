@@ -62,7 +62,7 @@ public class LoginPage extends AppCompatActivity {
 
     private void showErrorMessage(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Usuario o contraseña invalida")
+        builder.setMessage("Usuario o contraseña incorrectos")
                 .setTitle("Error")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

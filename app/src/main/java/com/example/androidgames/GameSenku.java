@@ -196,6 +196,7 @@ public class GameSenku extends AppCompatActivity {
                 }
             }
         }
+        System.out.println("Piezas restantes: "+pieces);
         return pieces == 1;
     }
 
